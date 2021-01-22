@@ -3,6 +3,7 @@ var fs = require('fs');
 var url = require('url');
 var qs=require('querystring');
 
+//make templateHTML function
 function templateHTML(title,list,body){
   return `
   <!doctype html>
@@ -21,6 +22,7 @@ function templateHTML(title,list,body){
   `
 }
 
+//make list function
 function templateList(filelist){
   var list=`<ul>`;
   for(var i=0;i<filelist.length;i++){
@@ -30,13 +32,15 @@ function templateList(filelist){
   return list;
 }
 
-
+//run
 var app = http.createServer(function (request, response) {
-  var _url = request.url;
-  var queryData = url.parse(_url, true).query;
-  var pathname=url.parse(_url,true).pathname;
+  var _url = request.url;//infomation about url
+  var queryData = url.parse(_url, true).query;//information about query string data
+  var pathname=url.parse(_url,true).pathname;//information about pathname
 
+  console.log(pathname);
   if(pathname==='/'){
+    //index page
     if(queryData.id===undefined){
       fs.readdir(`./data`,function(err,filelist){
         var list=templateList(filelist);
@@ -49,6 +53,7 @@ var app = http.createServer(function (request, response) {
         response.end(template);
       });
     }
+    //another page
     else{
       fs.readdir(`./data`,function(err,filelist){
         fs.readFile(`data/${queryData.id}`,'utf8',function(err,description){
@@ -62,6 +67,7 @@ var app = http.createServer(function (request, response) {
       });
     }
   }
+  //to make article page
   else if(pathname===`/create`){
     fs.readdir(`./data`,function(err,filelist){
       var list=templateList(filelist);
@@ -80,6 +86,7 @@ var app = http.createServer(function (request, response) {
       response.end(template);
     });
   }
+  //make file about inserting data
   else if(pathname===`/create_process`){
     var body="";
     request.on(`data`,function(data){
