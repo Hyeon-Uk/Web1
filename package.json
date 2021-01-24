@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/Hyeon-Uk/Web1#readme",
   "dependencies": {
+    "mysql": "^2.18.1",
+    "pm2": "^4.5.1",
     "sanitize-html": "^2.3.1"
   }
 }
